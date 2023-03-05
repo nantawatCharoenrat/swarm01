@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    image: nantawatcharoenrat/django:0503
+    volumes:
+      - static_data:/usr/src/app/static
+    ports:
+      - "9088:8000"
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: any
+      update_config:
+        delay: 5s
+        parallelism: 1
+        order: start-first
+
+volumes:
+  db_data:
+  static_data:
+
+networks:
+  default:
+    driver: overlay
+    attachable: true

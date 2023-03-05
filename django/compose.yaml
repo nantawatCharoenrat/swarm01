@@ -1,0 +1,7 @@
+services:
+  web: 
+    build:
+      context: app
+      target: builder
+    ports: 
+      - '8800:8000'

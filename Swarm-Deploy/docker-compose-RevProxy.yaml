@@ -1,0 +1,50 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - default
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  web:
+    image: nantawatcharoenrat/django:0503
+    networks:
+     - webproxy
+     - default
+    volumes:
+      - static_data:/usr/src/app/static
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+      labels:
+        - traefik.docker.network=webproxy
+        - traefik.enable=true
+        - traefik.http.routers.${APPNAME}-https.entrypoints=websecure
+        - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me")
+        - traefik.http.routers.${APPNAME}-https.tls.certresolver=default
+        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8088
+
+
+      restart_policy:
+        condition: any
+      update_config:
+        delay: 5s
+        parallelism: 1
+        order: start-first
+
+volumes:
+  db_data:
+  static_data:
+
+networks:
+  default:
+    driver: overlay
+    attachable: true
+  webproxy:
+    external: true
