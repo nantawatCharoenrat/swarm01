@@ -12,7 +12,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   web:
-    image: nantawatcharoenrat/django:0503
+    image: nantawatcharoenrat/django-web:0703
     networks:
      - webproxy
      - default
@@ -28,7 +28,7 @@ services:
         - traefik.http.routers.${APPNAME}-https.entrypoints=websecure
         - traefik.http.routers.${APPNAME}-https.rule=Host("${APPNAME}.xops.ipv9.me")
         - traefik.http.routers.${APPNAME}-https.tls.certresolver=default
-        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8088
+        - traefik.http.services.${APPNAME}.loadbalancer.server.port=8800
 
 
       restart_policy:
