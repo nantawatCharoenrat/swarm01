@@ -1,6 +1,6 @@
 # REFERENCE
 
-[github.com/docker/awesome-compose](https://github.com/docker/awesome-compose)
+[https://github.com/docker/awesome-compose/tree/master/django](https://github.com/docker/awesome-compose/tree/master/django)
 
 
 # SWARM-DEPLOY-DJANGO-SWARM01-SPCN09
